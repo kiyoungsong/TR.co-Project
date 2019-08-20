@@ -141,12 +141,12 @@ public class UIManager : MonoBehaviour
                 }else { }
             }
         }
-        else if (gameManager.Executecount == 3 && pause == false) //실행횟수가 3이고 일시정지가 아니면
+        else if (gameManager.Executecount == 3 && pause == false && gameManager.IsInhale == false) //실행횟수가 3이고 일시정지가 아니면
         {
-            Debug.LogWarning("실행횟수 3이고 일시정지가 false면");
-            pause = true;   //일시정지로 바꿔주고
-            Time.timeScale = 0.0f;  //시간멈춤 (이래야 게임이 안돌아감)
-            Result();   //결과값 보여주고
+            Debug.LogWarning("날숨에서 들숨으로 넘어감");
+            gameManager.Executecount = 0;
+            gameManager.IsInhale = true; // 들숨으로 바꿔주고
+            SceneManager.LoadScene("InHale"); //날숨->들숨
             if (Input.GetKeyDown(KeyCode.Escape))   //ESC누르면 측정 메뉴 화면으로 돌아가는데 이부분은 안드로이드 뒤로가기 버튼넣으면 될듯
             {
                 pause = false;  //일시정지 풀어주고
@@ -156,14 +156,15 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("실행횟수 3보다 작거지않고 일시정지가 false가 아닌것");    //위와 같음
-            pause = true;
-            Time.timeScale = 0.0f;
-            Result();
-            if (Input.GetKeyDown(KeyCode.Escape))
+            Debug.LogWarning("모든 측정 종료시");
+
+            pause = true;   //일시정지로 바꿔주고
+            Time.timeScale = 0.0f;  //시간멈춤 (이래야 게임이 안돌아감)
+            Result();   //결과값 보여주고
+            if (Input.GetKeyDown(KeyCode.Escape))   //ESC누르면 측정 메뉴 화면으로 돌아가는데 이부분은 안드로이드 뒤로가기 버튼넣으면 될듯
             {
-                pause = false;
-                gameManager.Executecount = 0;
+                pause = false;  //일시정지 풀어주고
+                gameManager.Executecount = 0;   //실행횟수 0해주고
                 SceneManager.LoadScene("StartMenu");
             }
         }
@@ -189,14 +190,8 @@ public class UIManager : MonoBehaviour
     {
         resultText.gameObject.SetActive(true);
         countdownText.gameObject.SetActive(false);
-        if(!gameManager.IsInhale)//날숨 내쉼
-        {
-            resultText.text = "측정 호기압은 : " + gameManager.MaxScore.ToString() + " 입니다.";
-        }
-        else //들숨 빨아들임
-        {
-            resultText.text = "측정 흡기압은 : " + (-1 * gameManager.MaxScore).ToString() + " 입니다.";
-        }
-        
+        resultText.text = "측정 호기압은 : " + gameManager.InHaleScore.ToString() + " 입니다. \n" +
+                          "측정 흡기압은 : " + (-1 * gameManager.ExHaleScore).ToString() + " 입니다."; ;
+
     }
 }

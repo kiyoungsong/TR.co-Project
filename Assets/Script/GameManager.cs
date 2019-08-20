@@ -11,11 +11,14 @@ public class GameManager : MonoBehaviour
     public static GameManager instance; //싱글턴을 할당할 전역변수
     public bool IsInhale = false; //들숨인지를 확인
     public int Executecount = 0; //측정 횟수 카운트
-    public float MaxScore;  //측정 최대 값
+    public float InHaleScore;  //날숨 최대값
+    public float ExHaleScore;  //들숨 최대값
     public float score; //실시간 측정 값
     public float[] mathScore = Enumerable.Repeat<float>(0, 1024).ToArray<float>(); //최대값 연산을 위한 배열
     public GameObject finishGameText; //측정 종료 시 활성화할 UI 게임 오브젝트
     public SceneManager sceneManager;
+    public float tmp; //임시 코드
+    public float tmp2; //임시 코드
     
 
     // Start is called before the first frame update
@@ -66,14 +69,14 @@ public class GameManager : MonoBehaviour
                 max = mathScore[i];
             }
         }
-        if(!IsInhale) //들숨
+        if(!IsInhale) //날숨
         {
-            MaxScore = (float)Math.Truncate(max*100.0f)/100.0f; //최대값
+            InHaleScore = (float)Math.Truncate(max*100.0f)/100.0f; //최대값
         }
-        else
+        else //들숨
         {
-            //이부분은 확인해봐야됨.
-            MaxScore = ((float)Math.Truncate(max * 100.0f)/100.0f)*-1; //음수 최대값
+
+            ExHaleScore = ((float)Math.Truncate(max * 100.0f)/100.0f)*-1; //음수 최대값
         }
         //Debug.Log(MaxScore); //최대값 확인하는 로그
     }

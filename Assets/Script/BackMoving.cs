@@ -22,6 +22,8 @@ public class BackMoving : MonoBehaviour
         {
             if (checkTime <= 3.01f && checkTime >= 0.01f)
             {
+                transform.Translate(-Vector3.forward * speed * Time.deltaTime / 2, Space.World);
+                count++;
                 //키누르면 뒤로 이동 이부분의 값을 블루투스로 바꿔주면 될듯함
                 if (Input.GetKeyDown(KeyCode.DownArrow) == true)
                 {
